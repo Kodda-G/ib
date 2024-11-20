@@ -1,0 +1,48 @@
+Генерация ключей ssh,парольные фразы
+
+Для удаленного доступа без ввода пароля можно сгенерированать пару ssh-ключей
+Генерация ключей:
+ssh-keygen -t <алгоритм шифрования>
+ssh-keygen -t rsa
+Generating public/private rsa key pair.
+Enter file in which to save the key (/home/tmp6/.ssh/id_rsa): 
+Enter passphrase (empty for no passphrase): 
+Enter same passphrase again: 
+Your identification has been saved in /home/tmp6/.ssh/id_rsa
+Your public key has been saved in /home/tmp6/.ssh/id_rsa.pub
+The key fingerprint is:
+SHA256:TZs8lbKWxJLAKGaZXbJxG/DSVa5sjy9+fQlLN9LyZbc tmp6@alexander-VirtualBox
+The key's randomart image is:
++---[RSA 3072]----+
+|   ++== ...      |
+|  * oB.= +   .   |
+| o .o + o * o    |
+|     . . B B     |
+|        S X  .   |
+|       . + .= + +|
+|        . .o B =o|
+|        ... o +E |
+|       ..o.  .   |
++----[SHA256]-----+
+2. Подключен к неизвестному ssh требует подтвержения ключа при помощи отпечатка
+tmp6@alexander-VirtualBox:~/.ssh$ ssh-copy-id -i id_rsa.pub Oleg@172.16.7.85
+/usr/bin/ssh-copy-id: INFO: Source of key(s) to be installed: "id_rsa.pub"
+/usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed
+/usr/bin/ssh-copy-id: INFO: 1 key(s) remain to be installed -- if you are prompted now it is to install the new keys
+Oleg@172.16.7.85's password: 
+
+
+Для подтверждения подолинности открытого ключа сервера ключ добавляется в файл удаление файла приводит к необходимости нового подтверждения
+
+eval $(ssh-agent -s)
+Agent pid 2404
+tmp6@alexander-VirtualBox:~/.ssh$ ssh-add id_rsa.pub
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@         WARNING: UNPROTECTED PRIVATE KEY FILE!          @
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+Permissions 0644 for 'id_rsa.pub' are too open.
+It is required that your private key files are NOT accessible by others.
+This private key will be ignored.
+tmp6@alexander-VirtualBox:~/.ssh$ ssh-add id_rsa
+Enter passphrase for id_rsa: 
+Identity added: id_rsa (tmp6@alexander-VirtualBox)
